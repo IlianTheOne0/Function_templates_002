@@ -10,32 +10,36 @@ using std::random_device;
 using std::mt19937;
 using std::uniform_int_distribution;
 
-void delete_value(int*& value, char indicator)
+template<typename TValueL>
+void delete_value(TValueL*& value, char indicator)
 {
 	delete value;
 	value = nullptr;
 }
-void delete_value(int*& arr, bool indicator)
+template<typename TValueL>
+void delete_value(TValueL*& arr, bool indicator)
 {
 	delete[] arr;
 	arr = nullptr;
 }
 
-void init_arr(int* arr, int size)
+template<typename TValue>
+void init_arr(TValue* arr, int* size)
 {
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dist(0, 99);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < *size; i++)
 	{
 		arr[i] = dist(gen);
 	}
 }
 
-void print_arr(int* arr, int* size)
+template<typename TValueL, typename TValueR>
+void print_arr(TValueL* arr, int* size, TValueR* message)
 {
-	cout << "Array: ";
+	cout << message;
 	for (int i = 0; i < *size; i++)
 	{
 		cout << arr[i] << " ";
@@ -66,22 +70,24 @@ bool selection()
 		case 3: { result = false; } break;
 	}
 
-	delete_value(value, ' ');
+	delete_value<int>(value, ' ');
 	return result;
 }
 
-int _compare(bool value, int a, int b)
+template<typename TValueL, typename TValueR>
+int _compare(bool value, TValueL a, TValueR b)
 {
 	if (value) { return a < b; }
 	else { return a > b; }
 }
 
-void sorting(int* arr, int* size, bool value)
+template<typename TValue>
+void sorting(TValue* arr, int* size, bool value)
 {
 	for (int i = 1; i < *size; i++)
 	{
 		int temp_value = 0;
-		while (_compare(value, arr[i - 1], arr[i]))
+		while (_compare<int, int>(value, arr[i - 1], arr[i]))
 		{
 			temp_value = arr[i];
 			arr[i] = arr[i - 1];
@@ -91,20 +97,20 @@ void sorting(int* arr, int* size, bool value)
 		}
 	}
 
-	print_arr(arr, size);
+	print_arr<int, const char>(arr, size, "Result: ");
 }
 
 int main()
 {
 	int* size = new int{ 10 };
 	int* arr = new int[*size];
-	init_arr(arr, *size);
-	print_arr(arr, size);
+	init_arr<int>(arr, size);
+	print_arr<int, const char>(arr, size, "Array: ");
 
-	sorting(arr, size, selection());
+	sorting<int>(arr, size, selection());
 
-	delete_value(arr, false);
-	delete_value(size, ' ');
+	delete_value<int>(arr, false);
+	delete_value<int>(size, ' ');
 
 	char ch = _getch();
 	return 0;
