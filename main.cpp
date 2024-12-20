@@ -105,7 +105,7 @@ int main()
 	cout << "|- The first date" << endl;
 	unsigned long long* first_year = get_value<unsigned long long, const char[]>("|  Enter the year: ", false, true);
 	unsigned long long* first_month = get_value<unsigned long long, const char[]>("|  Enter the month: ", true);
-	unsigned long long* first_day = get_value<unsigned long long, const char[]>("|  Enter the day: ", false, false, *first_month, *first_year);
+	long long* first_day = get_value<long long, const char[]>("|  Enter the day: ", false, false, *first_month, *first_year);
 	cout << endl;
 
 	cout << "|- The second date" << endl;
